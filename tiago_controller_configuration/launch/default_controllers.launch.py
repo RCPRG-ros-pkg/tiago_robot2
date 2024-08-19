@@ -68,6 +68,7 @@ def declare_actions(
         [
             generate_load_controller_launch_description(
                 controller_name="mobile_base_controller",
+                controller_type=LaunchConfiguration("controller_type"),
                 controller_params_file=LaunchConfiguration("base_config_file")
             )
         ]
@@ -79,6 +80,7 @@ def declare_actions(
         [
             generate_load_controller_launch_description(
                 controller_name="joint_state_broadcaster",
+                controller_type="joint_state_broadcaster/JointStateBroadcaster",
                 controller_params_file=os.path.join(
                     pkg_share_folder, "config", "joint_state_broadcaster.yaml"
                 ),
@@ -92,6 +94,7 @@ def declare_actions(
         [
             generate_load_controller_launch_description(
                 controller_name='imu_sensor_broadcaster',
+                controller_type='imu_sensor_broadcaster/IMUSensorBroadcaster',
                 controller_params_file=os.path.join(
                     pkg_share_folder, 'config', 'imu_sensor_broadcaster.yaml'))
 
@@ -104,6 +107,7 @@ def declare_actions(
         [
             generate_load_controller_launch_description(
                 controller_name="torso_controller",
+                controller_type="joint_trajectory_controller/JointTrajectoryController",
                 controller_params_file=os.path.join(
                     pkg_share_folder, "config", "torso_controller.yaml"
                 ),
@@ -118,6 +122,7 @@ def declare_actions(
         [
             generate_load_controller_launch_description(
                 controller_name="head_controller",
+                controller_type="joint_trajectory_controller/JointTrajectoryController",
                 controller_params_file=os.path.join(
                     pkg_share_folder, "config", "head_controller.yaml"
                 ),
@@ -133,6 +138,7 @@ def declare_actions(
         [
             generate_load_controller_launch_description(
                 controller_name='arm_controller',
+                controller_type='joint_trajectory_controller/JointTrajectoryController',
                 controller_params_file=os.path.join(
                     pkg_share_folder, 'config', 'arm_controller.yaml'))
         ],
@@ -147,6 +153,7 @@ def declare_actions(
         [
             generate_load_controller_launch_description(
                 controller_name="ft_sensor_controller",
+                controller_type="force_torque_sensor_broadcaster/ForceTorqueSensorBroadcaster",
                 controller_params_file=os.path.join(
                     pkg_share_folder, "config", "ft_sensor_controller.yaml"
                 ),
@@ -183,10 +190,14 @@ def create_base_configs(context, *args, **kwargs):
         base_type + "_controller_configuration")
     base_config_file = base_share_pkg_folder + "/config/mobile_base_controller.yaml"
 
-    if is_public_sim and (base_type == "pmb2"):
-        base_config_file = base_share_pkg_folder + "/config/mobile_base_controller_public_sim.yaml"
+    # Create controller type config
+    if base_type == "pmb2":
+        controller_type = "diff_drive_controller/DiffDriveController"
+    else:
+        controller_type = "omni_drive_controller/OmniDriveController"
 
-    return [SetLaunchConfiguration("base_config_file", base_config_file)]
+    return [SetLaunchConfiguration("base_config_file", base_config_file),
+            SetLaunchConfiguration("controller_type", controller_type)]
 
 
 def configure_end_effector(context, *args, **kwargs):
