@@ -109,6 +109,7 @@ def create_robot_description_param(context, *args, **kwargs):
         "use_sim_time": read_launch_argument("use_sim_time", context),
         "is_public_sim": read_launch_argument("is_public_sim", context),
         "namespace": read_launch_argument("namespace", context),
+        "use_grasp_fix_plugin": read_launch_argument("use_grasp_fix_plugin", context),
     }
     robot_description = load_xacro(xacro_file_path, xacro_input_args)
 

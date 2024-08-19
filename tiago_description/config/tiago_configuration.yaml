@@ -34,3 +34,7 @@ camera_model:
   description: 'Head camera model'
   choices: ['orbbec-astra', 'orbbec-astra-pro', 'asus-xtion', 'no-camera']
   default_value: 'orbbec-astra'
+use_grasp_fix_plugin:
+  description: 'Use Gazebo Grasp Fix plugin'
+  choices: ['False', 'True']
+  default_value: 'False'

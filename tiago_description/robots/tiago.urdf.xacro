@@ -69,6 +69,9 @@
   <xacro:arg name="namespace" default=""/>
   <xacro:arg name="is_public_sim" default="false"/>
 
+  <!-- false, true -->
+  <xacro:arg name="use_grasp_fix_plugin" default="false"/>
+
   <!-- PROPERTIES -->
 
   <!-- HW configuration -->
@@ -129,6 +132,8 @@
   <xacro:property name="namespace" value="$(arg namespace)" />
   <xacro:property name="is_public_sim" value="$(arg is_public_sim)" />
 
+  <xacro:property name="use_grasp_fix_plugin" value="$(arg use_grasp_fix_plugin)" />
+
   <!-- INCLUDES -->
 
   <!-- Tools -->
@@ -166,6 +171,28 @@
 
   <!-- ROS 2 control -->
   <xacro:include filename="$(find tiago_description)/ros2_control/ros2_control.urdf.xacro" />
+
+  <!-- GAZEBO MODEL PLUGINS -->
+
+  <xacro:if value="${use_grasp_fix_plugin and end_effector_name == 'gripper'}">
+    <gazebo>
+      <plugin name="gazebo_grasp_fix" filename="libgazebo_grasp_fix.so">
+          <arm>
+             <arm_name>arm</arm_name>
+             <palm_link>wrist_ft_link</palm_link>
+             <gripper_link>gripper_left_finger_link</gripper_link>
+             <gripper_link>gripper_right_finger_link</gripper_link>
+          </arm>
+         <forces_angle_tolerance>100</forces_angle_tolerance>
+         <update_rate>4</update_rate>
+         <grip_count_threshold>4</grip_count_threshold>
+         <max_grip_count>8</max_grip_count>
+         <release_tolerance>0.005</release_tolerance>
+         <disable_collisions_on_attach>true</disable_collisions_on_attach>
+         <contact_topic>__default_topic__</contact_topic>
+      </plugin>
+    </gazebo>
+  </xacro:if>
 
   <!-- ROBOT DEFINITION -->
 
