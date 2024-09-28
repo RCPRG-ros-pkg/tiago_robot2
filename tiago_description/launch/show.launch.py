@@ -35,6 +35,7 @@ class LaunchArguments(LaunchArgumentsBase):
     wrist_model: DeclareLaunchArgument = TiagoArgs.wrist_model
     camera_model: DeclareLaunchArgument = TiagoArgs.camera_model
     laser_model: DeclareLaunchArgument = TiagoArgs.laser_model
+    use_grasp_fix_plugin: DeclareLaunchArgument = TiagoArgs.use_grasp_fix_plugin
 
     use_sim_time: DeclareLaunchArgument = CommonArgs.use_sim_time
     is_public_sim: DeclareLaunchArgument = CommonArgs.is_public_sim
@@ -72,6 +73,7 @@ def declare_actions(
             "namespace": launch_args.namespace,
             "use_sim_time": launch_args.use_sim_time,
             "is_public_sim": launch_args.is_public_sim,
+            "use_grasp_fix_plugin": launch_args.use_grasp_fix_plugin,
         },
     )
 
