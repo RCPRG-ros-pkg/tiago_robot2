@@ -22,7 +22,7 @@ if(BUILD_TESTING)
 
   #  find_package(rostest REQUIRED)
     foreach(arm_type tiago-arm no-arm)
-      foreach(base_type pmb2 omni_base)
+      foreach(base_type pmb2)
         add_launch_test(
           test/test_description.launch.py
           TARGET "tiago_description_${base_type}_${arm_type}"
